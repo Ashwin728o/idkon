@@ -5,10 +5,11 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 const path = require('path');
+require("dotenv").config(); // .env load karega
 
 const app = express();
 
-mongoose.connect('mongodb+srv://kvnbharatha:grGtSHRpgGHxE1TR@cluster0.sjkopnr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log('MongoDB Connected'))
@@ -49,4 +50,4 @@ app.use('/', require('./routes/auth'));
 app.use('/', require('./routes/inbox'));
 app.use('/', require('./routes/compose'));
 
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+app.listen(process.env.PORT, () => console.log('Server running on http://localhost:3000'));
