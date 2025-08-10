@@ -9,12 +9,7 @@ require("dotenv").config(); // .env load karega
 
 const app = express();
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
-
+const MONGO_URI = process.env.MONGO_URI;
 
 
 
@@ -51,3 +46,5 @@ app.use('/', require('./routes/inbox'));
 app.use('/', require('./routes/compose'));
 
 app.listen(process.env.PORT, () => console.log('Server running on http://localhost:3000'));
+
+module.exports = app;
