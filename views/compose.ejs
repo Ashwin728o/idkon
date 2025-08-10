@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compose iMail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center py-10 px-4">
+
+  <div class="bg-white shadow-xl rounded-2xl w-full max-w-3xl p-8 border border-gray-200">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-3xl font-bold text-gray-800 flex items-center space-x-2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+             class="w-8 h-8 text-blue-600">
+          <path d="M4 4h16v16H4z"></path>
+          <path d="M4 4l8 8 8-8"></path>
+        </svg>
+        <span>Compose iMail</span>
+      </h2>
+      <a href="/inbox" class="text-blue-600 hover:underline text-sm">← Back to Inbox</a>
+    </div>
+
+    <!-- Form -->
+    <form method="POST" class="space-y-5">
+      <input 
+        type="text" 
+        name="to" 
+        placeholder="Recipient (iMail)" 
+        required
+        class="w-full border border-gray-300 rounded-xl px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+
+      <input 
+        type="text" 
+        name="subject" 
+        placeholder="Subject" 
+        required
+        class="w-full border border-gray-300 rounded-xl px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+
+      <textarea 
+        name="body" 
+        placeholder="Write your message here..." 
+        rows="8" 
+        class="w-full border border-gray-300 rounded-xl px-4 py-3 resize-none shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      ></textarea>
+
+      <!-- Buttons -->
+      <div class="flex justify-end space-x-4">
+        <a href="/inbox" class="px-5 py-2 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
+          Cancel
+        </a>
+        <button 
+          type="submit" 
+          class="px-6 py-2 rounded-xl bg-blue-600 text-white font-medium shadow hover:bg-blue-700 transition"
+        >
+          Send
+        </button>
+      </div>
+    </form>
+
+
+    <!-- Success / Error Message -->
+    <% if (message) { %>
+      <p class="mt-6 text-green-600 font-medium text-center"><%= message %></p>
+    <% } %>
+  </div>
+
+</body>
+</html>

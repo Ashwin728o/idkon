@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iMAIL - Main Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .transition-width {
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen flex flex-col">
+
+  <!-- Top Navbar -->
+  <header class="flex items-center justify-between px-6 py-3 bg-black border-b border-gray-800">
+    <div class="flex items-center space-x-4">
+      <!-- Sidebar Toggle Button -->
+      <button id="toggleSidebar" class="md:hidden text-gray-400 hover:text-white">
+        ☰
+      </button>
+      <!-- Logo -->
+      <svg viewBox="0 0 24 24" fill="white" class="w-10 h-10">
+        <path d="M2 4h20v16H2z" fill="none" stroke="white" stroke-width="2"/>
+        <path d="M2 4l10 8 10-8" fill="none" stroke="white" stroke-width="2"/>
+      </svg>
+      <span class="text-2xl font-bold">iMail</span>
+      <input type="text" placeholder="Search mail" 
+             class="hidden md:block w-96 px-4 py-2 border border-gray-700 rounded-full bg-gray-900 focus:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <!-- Auth Links -->
+    <div class="flex items-center space-x-4 text-sm">
+      <% if (user) { %>
+        <span class="text-gray-400"><%= user.email %></span>
+        <a href="/logout" class="hover:underline text-red-500">Logout</a>
+      <% } else { %>
+        <a href="/login" class="hover:underline text-blue-500">Login</a>
+        <a href="/signup" class="hover:underline text-green-500">Sign Up</a>
+      <% } %>
+    </div>
+  </header>
+
+  <div class="flex flex-1">
+    <!-- Sidebar -->
+    <% if (user) { %>
+      <aside id="sidebar" class="bg-black border-r border-gray-800 p-4 transition-width w-64">
+        <a href="/compose" class="block bg-red-600 text-white px-4 py-2 rounded-full text-center font-medium hover:bg-red-700">+ Compose</a>
+        <nav class="mt-6 space-y-1 text-gray-300">
+          <a href="/inbox" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-800">
+            <span>📥</span><span class="link-text">Inbox</span>
+          </a>
+          <a href="/sent" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-800">
+            <span>📤</span><span class="link-text">Sent</span>
+          </a>
+          <a href="/drafts" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-800">
+            <span>📝</span><span class="link-text">Drafts</span>
+          </a>
+          <a href="/trash" class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-gray-800">
+            <span>🗑️</span><span class="link-text">Trash</span>
+          </a>
+        </nav>
+      </aside>
+    <% } %>
+
+    <!-- Main Content -->
+    <main class="flex-1 bg-black">
+      <% if (user) { %>
+        <div class="border-b border-gray-800 px-6 py-4 font-semibold text-lg">Inbox</div>
+        <ul class="divide-y divide-gray-800">
+          <% messages.forEach(msg => { %>
+            <li class="flex items-start justify-between p-4 hover:bg-gray-900 transition">
+              <div class="flex-1">
+                <p class="text-xs text-gray-500"><strong>From:</strong> <%= msg.from %></p>
+                <p class="text-xs text-gray-500"><strong>To:</strong> <%= msg.to %></p>
+                <p class="font-semibold text-white mt-1"><%= msg.subject %></p>
+                <p class="text-gray-400 mt-1"><%= msg.body %></p>
+              </div>
+              <div class="flex items-center ml-4">
+                <form action="/delete/<%= msg._id %>" method="POST">
+                  <button type="submit" class="text-red-500 hover:text-red-700">🗑</button>
+                </form>
+              </div>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <div class="flex flex-col items-center justify-center flex-1">
+          <h1 class="text-4xl font-bold mb-2">Welcome to iMail</h1>
+          <p class="text-gray-400 mb-6">Sign in to access your emails</p>
+          <div class="space-x-4">
+            <a href="/login" class="px-6 py-2 bg-blue-600 rounded-full hover:bg-blue-700">Login</a>
+            <a href="/signup" class="px-6 py-2 bg-gray-700 rounded-full hover:bg-gray-800">Create Account</a>
+          </div>
+        </div>
+      <% } %>
+    </main>
+  </div>
+
+  <script>
+    const toggleSidebarBtn = document.getElementById("toggleSidebar");
+    const sidebar = document.getElementById("sidebar");
+
+    if (toggleSidebarBtn && sidebar) {
+      toggleSidebarBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("w-64");
+        sidebar.classList.toggle("w-16");
+
+        // Toggle text visibility
+        document.querySelectorAll("#sidebar .link-text").forEach(el => {
+          el.classList.toggle("hidden");
+        });
+      });
+    }
+  </script>
+
+</body>
+</html>
